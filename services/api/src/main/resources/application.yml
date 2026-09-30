@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: aeroops-api
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/aeroops}
+    username: ${DB_USER:aeroops}
+    password: ${DB_PASSWORD:aeroops}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OIDC_ISSUER_URI:http://localhost:8081/realms/aeroops}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+server:
+  port: 8080
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{correlationId}] %-5level %logger{36} - %msg%n"
+
+aeroops:
+  tenant:
+    claim: tenant_id
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  flyway:
+    locations: classpath:db/migration,classpath:db/dev-seed
+    # dev-seed's V900 is deliberately numbered high so it always applies last; that means
+    # a later-added, lower-numbered core migration (e.g. this session's V3) is "out of
+    # order" relative to it in any dev DB where V900 already ran. Safe here only because
+    # this is local synthetic dev data — never set this on a shared/prod profile.
+    out-of-order: true
+
+aeroops:
+  dev-seed:
+    enabled: true

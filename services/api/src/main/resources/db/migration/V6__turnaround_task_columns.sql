@@ -1,0 +1,15 @@
+ALTER TABLE turnaround ADD COLUMN template_name VARCHAR(64) NOT NULL;
+
+ALTER TABLE task ADD COLUMN name VARCHAR(128) NOT NULL;
+ALTER TABLE task ADD COLUMN sequence INTEGER NOT NULL;
+ALTER TABLE task ADD COLUMN expected_at TIMESTAMPTZ;
+ALTER TABLE task ADD COLUMN status VARCHAR(32) NOT NULL DEFAULT 'PENDING';
+
+CREATE TABLE task_revision (
+    id          UUID PRIMARY KEY,
+    tenant_id   VARCHAR(64) NOT NULL REFERENCES airport_tenant(id),
+    task_id     UUID NOT NULL REFERENCES task(id),
+    actor       VARCHAR(128) NOT NULL,
+    actual_at   TIMESTAMPTZ NOT NULL,
+    recorded_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);

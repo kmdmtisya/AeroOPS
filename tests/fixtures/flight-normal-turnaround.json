@@ -1,0 +1,25 @@
+{
+  "event_id": "evt-0001",
+  "tenant_id": "demo-airport",
+  "source": "SIMULATOR",
+  "event_type": "flight.update",
+  "schema_version": "1.0",
+  "occurred_at": "2026-09-29T06:45:00Z",
+  "received_at": "2026-09-29T06:45:03Z",
+  "correlation_id": "corr-0001",
+  "payload": {
+    "external_id": "SIM-FL-1001",
+    "carrier": "SA",
+    "flight_number": "SA1234",
+    "service_date": "2026-09-29",
+    "origin": "CPT",
+    "destination": "JNB",
+    "scheduled_on_block": "2026-09-29T07:00:00Z",
+    "estimated_on_block": "2026-09-29T07:02:00Z",
+    "actual_on_block": "2026-09-29T07:03:00Z",
+    "scheduled_off_block": "2026-09-29T07:45:00Z",
+    "estimated_off_block": "2026-09-29T07:48:00Z",
+    "actual_off_block": null,
+    "lifecycle": "TURNAROUND"
+  }
+}

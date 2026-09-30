@@ -1,0 +1,26 @@
+{
+  "event_id": "evt-0002",
+  "tenant_id": "demo-airport",
+  "source": "SIMULATOR",
+  "event_type": "flight.update",
+  "schema_version": "1.0",
+  "occurred_at": "2026-09-29T08:10:00Z",
+  "received_at": "2026-09-29T08:10:04Z",
+  "correlation_id": "corr-0002",
+  "payload": {
+    "external_id": "SIM-FL-1002",
+    "carrier": "SA",
+    "flight_number": "SA5678",
+    "service_date": "2026-09-29",
+    "origin": "DUR",
+    "destination": "JNB",
+    "scheduled_on_block": "2026-09-29T08:00:00Z",
+    "estimated_on_block": "2026-09-29T08:35:00Z",
+    "actual_on_block": null,
+    "scheduled_off_block": "2026-09-29T08:45:00Z",
+    "estimated_off_block": "2026-09-29T09:20:00Z",
+    "actual_off_block": null,
+    "lifecycle": "INBOUND"
+  },
+  "notes": "Late inbound overlapping the stand window already held by SIM-FL-1001's next rotation; used to exercise stand-conflict detection once the Resources module lands in Phase 3."
+}

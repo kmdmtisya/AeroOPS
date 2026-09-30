@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aeroops.local/contracts/event-envelope.schema.json",
+  "title": "InboundEventEnvelope",
+  "description": "Envelope for every inbound operational event, per AEROOPS_SYSTEM_DESIGN.md section 5. Wraps a typed payload (see flight-event.schema.json) with identity, tenancy and timing metadata needed for idempotent, auditable ingestion.",
+  "type": "object",
+  "required": [
+    "event_id",
+    "tenant_id",
+    "source",
+    "event_type",
+    "schema_version",
+    "occurred_at",
+    "received_at",
+    "payload"
+  ],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "description": "Unique identifier assigned by the source system. Used with source_system as the dedupe key."
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Airport tenant this event belongs to. Resolved from the authenticated integration credential, never trusted from payload alone."
+    },
+    "source": {
+      "type": "string",
+      "description": "Identifier of the originating system, e.g. AODB, HANDLER, SIMULATOR."
+    },
+    "event_type": {
+      "type": "string",
+      "description": "Discriminator for payload shape, e.g. flight.update, stand.assignment, task.update."
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Version of the payload schema this event was produced against."
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when the event occurred at the source."
+    },
+    "received_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when AeroOps received the event."
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Optional identifier linking related events across a single operational transaction."
+    },
+    "payload": {
+      "type": "object",
+      "description": "Event-type-specific body. See flight-event.schema.json for event_type=flight.update."
+    }
+  },
+  "additionalProperties": false
+}

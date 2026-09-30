@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    # H2's PostgreSQL mode doesn't know the TIMESTAMPTZ alias used throughout the Flyway
+    # migrations (only the SQL-standard TIMESTAMP WITH TIME ZONE) — teach it via a domain
+    # at connection init rather than editing already-applied migration files (would break
+    # Flyway checksum validation against the real Postgres container).
+    url: jdbc:h2:mem:aeroops;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;INIT=CREATE DOMAIN IF NOT EXISTS TIMESTAMPTZ AS TIMESTAMP WITH TIME ZONE\;
+    username: sa
+    password: sa
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database-platform: org.hibernate.dialect.H2Dialect
+  flyway:
+    locations: classpath:db/migration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/aeroops-test

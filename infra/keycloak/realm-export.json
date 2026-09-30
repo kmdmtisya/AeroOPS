@@ -1,0 +1,60 @@
+{
+  "realm": "aeroops",
+  "enabled": true,
+  "sslRequired": "none",
+  "roles": {
+    "realm": [
+      { "name": "viewer", "description": "Read-only access to operational views" },
+      { "name": "handler", "description": "Ground-handler supervisor/agent task updates" },
+      { "name": "controller", "description": "AOCC controller" },
+      { "name": "planner", "description": "Stand planner" },
+      { "name": "tenant-admin", "description": "Airport tenant administrator" },
+      { "name": "auditor", "description": "Read-only access control and history review" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "aeroops-web",
+      "enabled": true,
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["http://localhost:5173/*"],
+      "webOrigins": ["http://localhost:5173"],
+      "protocolMappers": [
+        {
+          "name": "tenant_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "tenant_id",
+            "claim.name": "tenant_id",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "demo.controller",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Controller",
+      "email": "demo.controller@aeroops.local",
+      "credentials": [
+        { "type": "password", "value": "demo", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["controller"],
+      "attributes": {
+        "tenant_id": ["demo-airport"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aeroops.local/contracts/flight-event.schema.json",
+  "title": "FlightEventPayload",
+  "description": "Canonical flight payload carried inside an InboundEventEnvelope with event_type=flight.update. Mirrors the FlightLeg entity in AEROOPS_SYSTEM_DESIGN.md section 4. Scheduled, estimated and actual times are always distinguished; never infer actual from estimated.",
+  "type": "object",
+  "required": [
+    "external_id",
+    "carrier",
+    "flight_number",
+    "service_date",
+    "origin",
+    "destination",
+    "lifecycle"
+  ],
+  "properties": {
+    "external_id": {
+      "type": "string",
+      "description": "Source system's identifier for this flight leg, unique per tenant."
+    },
+    "carrier": {
+      "type": "string",
+      "description": "Operating carrier IATA/ICAO code."
+    },
+    "flight_number": {
+      "type": "string"
+    },
+    "service_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Local operational date of the flight, used to disambiguate flight number reuse."
+    },
+    "origin": {
+      "type": "string",
+      "description": "IATA/ICAO code of the origin station."
+    },
+    "destination": {
+      "type": "string",
+      "description": "IATA/ICAO code of the destination station."
+    },
+    "scheduled_on_block": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "estimated_on_block": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "actual_on_block": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "scheduled_off_block": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "estimated_off_block": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "actual_off_block": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "lifecycle": {
+      "type": "string",
+      "description": "Coarse flight state, e.g. SCHEDULED, INBOUND, ON_BLOCK, TURNAROUND, READY, OFF_BLOCK, CANCELLED.",
+      "enum": [
+        "SCHEDULED",
+        "INBOUND",
+        "ON_BLOCK",
+        "TURNAROUND",
+        "READY",
+        "OFF_BLOCK",
+        "CANCELLED"
+      ]
+    }
+  },
+  "additionalProperties": false
+}
