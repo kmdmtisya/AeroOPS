@@ -27,10 +27,24 @@ services:
       # callers and breaks the API's JWT issuer validation). Keycloak 25 defaults to
       # the hostname:v2 feature, which reads KC_HOSTNAME as a full URL, not the v1
       # KC_HOSTNAME_URL/KC_HOSTNAME_ADMIN_URL pair.
-      KC_HOSTNAME: http://keycloak:8080
+      #
+      # Under hostname:v2, KC_HOSTNAME also governs every link Keycloak's own pages
+      # generate (e.g. the login form's POST target) — not just the issuer claim —
+      # regardless of the Host header the browser actually used to reach it. So this
+      # must be a hostname:port the *browser* can resolve and connect to, not just the
+      # API container. We use "keycloak" (requires a hosts-file entry mapping it to
+      # 127.0.0.1 — see infra/README or ask whoever set this up) on port 8081, and make
+      # Keycloak actually listen on 8081 internally (KC_HTTP_PORT below) so this is a
+      # real, reachable address for both the browser and the API container, not just a
+      # label. Getting this wrong (e.g. leaving it on the image's default port 8080,
+      # which nothing here maps or listens on for browser access) is what causes
+      # ERR_NAME_NOT_RESOLVED / connection-refused when the browser follows a
+      # Keycloak-rendered link.
+      KC_HOSTNAME: http://keycloak:8081
+      KC_HTTP_PORT: "8081"
       KC_HTTP_ENABLED: "true"
     ports:
-      - "8081:8080"
+      - "8081:8081"
     volumes:
       - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
 
@@ -41,7 +55,7 @@ services:
       DB_URL: jdbc:postgresql://postgres:5432/aeroops
       DB_USER: aeroops
       DB_PASSWORD: aeroops
-      OIDC_ISSUER_URI: http://keycloak:8080/realms/aeroops
+      OIDC_ISSUER_URI: http://keycloak:8081/realms/aeroops
       SPRING_PROFILES_ACTIVE: dev
     ports:
       # Host port 8082 avoids a collision with other local projects already on 8080;

@@ -2,14 +2,20 @@ import type { ReactNode } from "react";
 import { AuthProvider as OidcAuthProvider, useAuth as useOidcAuth } from "react-oidc-context";
 
 // Keycloak's KC_HOSTNAME (see infra/docker-compose.yml) pins every token's "iss" claim to
-// http://keycloak:8080/realms/aeroops regardless of which host:port a caller actually used to
+// http://keycloak:8081/realms/aeroops regardless of which host:port a caller actually used to
 // reach Keycloak — the same reason the API validates JWTs against that exact issuer string.
-// The browser, however, can only reach Keycloak via the host-mapped port (localhost:8081), so
-// we skip oidc-client-ts's discovery fetch (which would resolve to the unreachable "keycloak"
-// hostname) and supply explicit endpoint metadata: real, browser-reachable URLs for every
-// endpoint, but the exact issuer string that will actually appear in the token's "iss" claim.
+// A browser can also reach Keycloak directly via "keycloak:8081" (matching this ISSUER
+// exactly) once "keycloak" resolves to 127.0.0.1 — e.g. via a hosts-file entry — which is
+// required for Keycloak's own rendered pages (e.g. the login form) to work, since those
+// pages' links are generated from KC_HOSTNAME too, not from whatever host:port the browser
+// used to get there. Rather than depend on that being set up, we point AUTHORITY_BASE at
+// localhost:8081 (always reachable, no hosts-file entry required) and skip oidc-client-ts's
+// discovery fetch (which would otherwise resolve to AUTHORITY_BASE's issuer field and diverge
+// from the "iss" claim the API actually validates against) by supplying explicit endpoint
+// metadata: real, browser-reachable URLs for every endpoint, but the exact issuer string that
+// will actually appear in the token's "iss" claim.
 const AUTHORITY_BASE = import.meta.env.VITE_OIDC_AUTHORITY_BASE ?? "http://localhost:8081/realms/aeroops";
-const ISSUER = import.meta.env.VITE_OIDC_ISSUER ?? "http://keycloak:8080/realms/aeroops";
+const ISSUER = import.meta.env.VITE_OIDC_ISSUER ?? "http://keycloak:8081/realms/aeroops";
 
 const oidcConfig = {
   authority: AUTHORITY_BASE,
