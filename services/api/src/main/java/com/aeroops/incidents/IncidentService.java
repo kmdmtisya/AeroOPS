@@ -4,11 +4,12 @@ import com.aeroops.audit.AuditEvent;
 import com.aeroops.audit.AuditEventRepository;
 import com.aeroops.tenancy.ActorContext;
 import com.aeroops.tenancy.TenantContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 /**
@@ -58,7 +59,7 @@ public class IncidentService {
 
     private Incident getOwned(UUID id, String tenantId) {
         return incidentRepository.findByIdAndTenantId(id, tenantId)
-                .orElseThrow(() -> new NoSuchElementException("Incident not found: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Incident not found: " + id));
     }
 
     private void audit(String tenantId, String action, UUID incidentId, String beforeRef, String afterRef) {

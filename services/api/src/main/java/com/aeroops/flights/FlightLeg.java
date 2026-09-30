@@ -194,6 +194,10 @@ public class FlightLeg {
         return updatedAt;
     }
 
+    public long getVersion() {
+        return version;
+    }
+
     public Instant getLastEventOccurredAt() {
         return lastEventOccurredAt;
     }

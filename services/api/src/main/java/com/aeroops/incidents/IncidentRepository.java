@@ -11,4 +11,6 @@ public interface IncidentRepository extends JpaRepository<Incident, UUID> {
     List<Incident> findByTenantIdOrderByOpenedAtDesc(String tenantId);
 
     Optional<Incident> findByIdAndTenantId(UUID id, String tenantId);
+
+    List<Incident> findByFlightLegIdAndTenantId(UUID flightLegId, String tenantId);
 }

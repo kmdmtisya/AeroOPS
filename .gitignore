@@ -9,6 +9,7 @@ node_modules/
 dist/
 build/
 .vite/
+*.tsbuildinfo
 
 # Env / secrets
 .env
@@ -29,6 +30,9 @@ Thumbs.db
 
 # Docker
 infra/keycloak/data/
+
+# Local Postgres backup/restore rehearsal dumps — never commit database contents
+infra/backups/
 
 # Local corporate TLS-inspection CA certs, needed only to build behind this
 # network's proxy — see services/api/certs/README.md. Never commit these.

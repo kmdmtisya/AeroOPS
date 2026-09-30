@@ -55,6 +55,86 @@
       "attributes": {
         "tenant_id": ["demo-airport"]
       }
+    },
+    {
+      "username": "demo.viewer",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Viewer",
+      "email": "demo.viewer@aeroops.local",
+      "credentials": [
+        { "type": "password", "value": "demo", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["viewer"],
+      "attributes": {
+        "tenant_id": ["demo-airport"]
+      }
+    },
+    {
+      "username": "demo.handler",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Handler",
+      "email": "demo.handler@aeroops.local",
+      "credentials": [
+        { "type": "password", "value": "demo", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["handler"],
+      "attributes": {
+        "tenant_id": ["demo-airport"]
+      }
+    },
+    {
+      "username": "demo.planner",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Planner",
+      "email": "demo.planner@aeroops.local",
+      "credentials": [
+        { "type": "password", "value": "demo", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["planner"],
+      "attributes": {
+        "tenant_id": ["demo-airport"]
+      }
+    },
+    {
+      "username": "demo.tenantadmin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "TenantAdmin",
+      "email": "demo.tenantadmin@aeroops.local",
+      "credentials": [
+        { "type": "password", "value": "demo", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["tenant-admin"],
+      "attributes": {
+        "tenant_id": ["demo-airport"]
+      }
+    },
+    {
+      "username": "demo.auditor",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Demo",
+      "lastName": "Auditor",
+      "email": "demo.auditor@aeroops.local",
+      "credentials": [
+        { "type": "password", "value": "demo", "temporary": false }
+      ],
+      "requiredActions": [],
+      "realmRoles": ["auditor"],
+      "attributes": {
+        "tenant_id": ["demo-airport"]
+      }
     }
   ]
 }

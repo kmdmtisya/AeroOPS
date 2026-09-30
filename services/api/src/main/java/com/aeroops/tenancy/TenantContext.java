@@ -27,4 +27,8 @@ public final class TenantContext {
     public static void clear() {
         CURRENT_TENANT.remove();
     }
+
+    public static boolean isBound() {
+        return CURRENT_TENANT.get() != null;
+    }
 }

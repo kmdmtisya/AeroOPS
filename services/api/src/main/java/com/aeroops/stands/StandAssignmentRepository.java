@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface StandAssignmentRepository extends JpaRepository<StandAssignment, UUID> {
@@ -27,4 +28,6 @@ public interface StandAssignmentRepository extends JpaRepository<StandAssignment
             nativeQuery = true)
     List<StandAssignment> findByTenantIdAndServiceDate(@Param("tenantId") String tenantId,
                                                          @Param("serviceDate") LocalDate serviceDate);
+
+    Optional<StandAssignment> findByFlightIdAndTenantIdAndStatus(UUID flightId, String tenantId, String status);
 }

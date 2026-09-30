@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface TurnaroundRepository extends JpaRepository<Turnaround, UUID> {
 
     Optional<Turnaround> findByIdAndTenantId(UUID id, String tenantId);
+
+    Optional<Turnaround> findByFlightIdAndTenantId(UUID flightId, String tenantId);
 }

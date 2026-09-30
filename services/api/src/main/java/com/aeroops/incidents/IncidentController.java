@@ -3,6 +3,7 @@ package com.aeroops.incidents;
 import com.aeroops.tenancy.TenantContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,17 +39,20 @@ public class IncidentController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('CONTROLLER', 'PLANNER', 'TENANT_ADMIN')")
     public ResponseEntity<IncidentView> create(@RequestBody CreateIncidentRequest request) {
         Incident incident = incidentService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(IncidentView.from(incident));
     }
 
     @PostMapping("/{id}/assign")
+    @PreAuthorize("hasAnyRole('CONTROLLER', 'PLANNER', 'TENANT_ADMIN')")
     public IncidentView assign(@PathVariable UUID id, @RequestBody AssignIncidentRequest request) {
         return IncidentView.from(incidentService.assign(id, request.owner()));
     }
 
     @PostMapping("/{id}/resolve")
+    @PreAuthorize("hasAnyRole('CONTROLLER', 'PLANNER', 'TENANT_ADMIN')")
     public IncidentView resolve(@PathVariable UUID id) {
         return IncidentView.from(incidentService.resolve(id));
     }

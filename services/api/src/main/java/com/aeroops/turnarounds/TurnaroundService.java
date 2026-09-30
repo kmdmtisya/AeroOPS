@@ -4,12 +4,13 @@ import com.aeroops.audit.AuditEvent;
 import com.aeroops.audit.AuditEventRepository;
 import com.aeroops.tenancy.ActorContext;
 import com.aeroops.tenancy.TenantContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -48,9 +49,9 @@ public class TurnaroundService {
     public Task completeTask(UUID turnaroundId, UUID taskId, Instant actualAt) {
         String tenantId = TenantContext.get();
         turnaroundRepository.findByIdAndTenantId(turnaroundId, tenantId)
-                .orElseThrow(() -> new NoSuchElementException("Turnaround not found: " + turnaroundId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Turnaround not found: " + turnaroundId));
         Task task = taskRepository.findByIdAndTurnaroundIdAndTenantId(taskId, turnaroundId, tenantId)
-                .orElseThrow(() -> new NoSuchElementException("Task not found: " + taskId));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Task not found: " + taskId));
 
         String actor = ActorContext.get();
         taskRevisionRepository.save(TaskRevision.create(tenantId, task.getId(), actor, actualAt));
